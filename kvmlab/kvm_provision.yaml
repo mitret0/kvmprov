@@ -1,5 +1,5 @@
 ---
-- name: Deploys VM based on cloud image
+- name: Deploys VM based on golden image
   hosts: localhost
   gather_facts: yes
   become: yes
