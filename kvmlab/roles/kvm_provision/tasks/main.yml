@@ -1,0 +1,64 @@
+---
+# tasks file for kvm_provision
+- name: Ensure requirements in place
+  package:
+    name:
+      - guestfs-tools
+      - python3-libvirt
+    state: present
+  become: yes
+
+- name: Get VMs list
+  community.libvirt.virt:
+    command: list_vms
+  register: existing_vms
+  changed_when: no
+
+- name: Copy base image to libvirt directory
+  copy:
+    dest: "{{ libvirt_pool_dir }}/{{ vm_name }}.qcow2"
+    src: "{{ libvirt_pool_dir }}/{{ base_image_name }}"
+    force: no
+    remote_src: yes 
+    mode: 0660
+  register: copy_results
+
+- name: virt-sysprep
+  command: |
+    virt-sysprep -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2
+  when: copy_results is changed
+ 
+
+- name: Configure the image
+  command: |
+    virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
+    --hostname {{ vm_name }} \
+    --root-password password:{{ vm_root_pass }} \
+    --ssh-inject 'mitre:file:{{ ssh_key }}' \
+    --firstboot-command 'useradd -m ;echo "mitre:{{ vm_user_pass }}|chpasswd"' \
+    --sm-credentials mitreto:password:{{ vm_user_pass }} \
+    --sm-register \
+    --sm-attach auto \
+    --uninstall cloud-init --selinux-relabel \
+  
+
+- name: Define vm
+  community.libvirt.virt:
+    command: define
+    xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
+  when: "vm_name not in existing_vms.list_vms"
+      
+- name: Ensure VM is started
+  community.libvirt.virt:
+    name: "{{ vm_name }}"
+    state: running
+  register: vm_start_results
+  until: "vm_start_results is success"
+  retries: 15
+  delay: 2
+
+- name: Ensure temporary file is deleted
+  file:
+    path: "/tmp/{{ base_image_name }}"
+    state: absent
+  when: cleanup_tmp | bool

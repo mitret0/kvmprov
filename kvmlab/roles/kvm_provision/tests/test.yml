@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  remote_user: mitre
+  roles:
+    - kvm_provision
