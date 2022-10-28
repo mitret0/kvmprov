@@ -8,8 +8,8 @@ vm_name:
 vm_vcpus: 2
 vm_ram_mb: 2048
 vm_net: default
-vm_root_pass: P0rtokal!
+vm_root_pass: PWD
 vm_user: mitre
-vm_user_pass: Mandar!n1t3
+vm_user_pass: PWD
 cleanup_tmp: no
 ssh_key: /home/mitre/.ssh/id_rsa.pub
