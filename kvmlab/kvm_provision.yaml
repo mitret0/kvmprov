@@ -14,8 +14,7 @@
   tasks:
     - name: KVM Provision role
       loop:
-        - tst1
-        - tst2
+        - tst1      
       include_role:
         name: kvm_provision
       vars:
