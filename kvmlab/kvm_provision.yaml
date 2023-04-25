@@ -1,5 +1,5 @@
 ---
-- name: Deploys VM based on cloud image
+- name: Deploys VM based on golden image
   hosts: localhost
   gather_facts: yes
   become: yes
@@ -14,8 +14,7 @@
   tasks:
     - name: KVM Provision role
       loop:
-        - tst1
-        - tst2
+        - tst1      
       include_role:
         name: kvm_provision
       vars:

@@ -6,7 +6,7 @@
       - guestfs-tools
       - python3-libvirt
     state: present
-  become: yes
+  
 
 - name: Get VMs list
   community.libvirt.virt:
@@ -32,22 +32,17 @@
 - name: Configure the image
   command: |
     virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
-    --hostname {{ vm_name }} \
+    --hostname {{ vm_name }}.virtu.lan \
+    --firstboot-command 'useradd -m mitre' \
     --root-password password:{{ vm_root_pass }} \
-    --ssh-inject 'mitre:file:{{ ssh_key }}' \
-    --firstboot-command 'useradd -m ;echo "mitre:{{ vm_user_pass }}|chpasswd"' \
-    --sm-credentials mitreto:password:{{ vm_user_pass }} \
-    --sm-register \
-    --sm-attach auto \
-    --uninstall cloud-init --selinux-relabel \
-  
+    --uninstall cloud-init --selinux-relabel
 
 - name: Define vm
   community.libvirt.virt:
     command: define
     xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
   when: "vm_name not in existing_vms.list_vms"
-      
+
 - name: Ensure VM is started
   community.libvirt.virt:
     name: "{{ vm_name }}"
@@ -55,7 +50,50 @@
   register: vm_start_results
   until: "vm_start_results is success"
   retries: 15
-  delay: 2
+
+- name: Sleep for 30 seconds and continue with play
+  ansible.builtin.wait_for:
+    timeout: 30
+
+- name: Ensure VM is stopped
+  debugger: on_skipped
+  community.libvirt.virt:
+    name: "{{ vm_name }}"
+    state: shutdown
+  register: vm_stop_results
+  until: "vm_stop_results is success"
+  retries: 20
+  
+- name: unDefine vm
+  community.libvirt.virt:
+    name: "{{ vm_name }}"
+    command: undefine
+  when: "vm_stop_results is success"
+  
+- name: Configure the image again
+  command: |
+    virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
+    --ssh-inject 'mitre:file:{{ ssh_key }}'
+    --password mitre:password:{{ vm_user_pass }} \
+    --copy-in /home/mitre/proj/mitre/kvmlab/roles/kvm_provision/defaults/mitresudo:/etc/sudoers.d/
+    --sm-credentials mitreto:password:{{ vm_user_pass }} \
+    --sm-register \
+    --sm-attach auto --selinux-relabel
+
+- name: Define vm again
+  community.libvirt.virt:
+    command: define
+    xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
+  when: "vm_name not in existing_vms.list_vms"
+
+- name: Ensure VM is started again
+  community.libvirt.virt:
+    name: "{{ vm_name }}"
+    state: running
+  register: vm_start_results
+  until: "vm_start_results is success"
+  retries: 15
+  delay: 10    
 
 - name: Ensure temporary file is deleted
   file:
