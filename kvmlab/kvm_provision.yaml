@@ -1,6 +1,6 @@
 ---
 - name: Deploys VM based on golden image
-  hosts: localhost
+  hosts: 192.168.1.100 
   gather_facts: yes
   become: yes
   vars:
