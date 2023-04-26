@@ -1,6 +1,6 @@
 ---
 # defaults file for kvm_provision#
-base_image_name: composer-api-a1be6c49-8773-433a-8884-921b19c94f85-disk.qcow2
+base_image_name: 
 base_image_url: /home/mitre/img/{{ base_image_name }}
 #base_image_sha: cd339d4ba0f9feb76533566281f967bdad7a4ad7f40b2c951d91565aa05198d657af97c9645899e21c67cd7e43fa85668b6729b06e99091bcc8d6a6a063c6c51
 libvirt_pool_dir: "/home/mitre/stor"
