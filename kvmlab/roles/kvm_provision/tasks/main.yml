@@ -53,7 +53,7 @@
 
 - name: Sleep for 30 seconds and continue with play
   ansible.builtin.wait_for:
-    timeout: 30
+    timeout: 60
 
 - name: Ensure VM is stopped
   debugger: on_skipped
@@ -75,10 +75,7 @@
     virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
     --ssh-inject 'mitre:file:{{ ssh_key }}'
     --password mitre:password:{{ vm_user_pass }} \
-    --copy-in /home/mitre/proj/mitre/kvmlab/roles/kvm_provision/defaults/mitresudo:/etc/sudoers.d/
-    --sm-credentials mitreto:password:{{ vm_user_pass }} \
-    --sm-register \
-    --sm-attach auto --selinux-relabel
+    --selinux-relabel
 
 - name: Define vm again
   community.libvirt.virt:
