@@ -4,7 +4,7 @@
   gather_facts: yes
   become: yes
   vars:
-    pool_dir: "/home/mitre/vm"
+    pool_dir: "/home/mitre/stor"
     vcpus: 2
     ram_mb: 2048
     cleanup: yes
