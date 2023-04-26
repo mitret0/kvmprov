@@ -1,12 +1,4 @@
 ---
-collections:
-  - name: ansible.posix
-    version: 1.5.2
-  - name: community.crypto
-    version: 1.5.0
-  - name: community.libvirt
-    version: 1.2.0
-
 - name: Deploys VM based on golden image
   hosts: 192.168.1.100 
   gather_facts: yes
