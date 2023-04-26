@@ -56,3 +56,24 @@
     path: "/tmp/{{ base_image_name }}"
     state: absent
   when: cleanup_tmp | bool
+  
+- name: Create new losers
+  hosts: "{{ vm_name }}"
+  vars: 
+    username: mitre 
+    userpass: "{{ vm_user_pass }}"
+- name: Create Loser
+    ansible,builtin.user:
+      name: "{{ username }}"
+      state: present
+      shell: /bin/bash
+      password: "{{ userpass | password_hash('sha512') }}"
+      update_password: on_create
+      groups: "{{ super_group }}"
+      append: yes
+
+- name:
+    ansible.posix.authorized_key:
+      user: "{{ username }}"
+      state: present
+      key: "{{ lookup('file', '/home/{{ username }}/.ssh/id_rsa.pub') }}"
