@@ -1,0 +1,15 @@
+---
+# defaults file for kvm_provision#
+base_image_name: 
+base_image_url: /home/mitre/img/{{ base_image_name }}
+#base_image_sha: cd339d4ba0f9feb76533566281f967bdad7a4ad7f40b2c951d91565aa05198d657af97c9645899e21c67cd7e43fa85668b6729b06e99091bcc8d6a6a063c6c51
+libvirt_pool_dir: "/home/mitre/stor"
+vm_name: 
+vm_vcpus: 2
+vm_ram_mb: 2048
+vm_net: default
+vm_root_pass: "{{ lookup('file','pwd.yml') }}"
+vm_user: mitre
+vm_user_pass: "{{ lookup('file','pwd1.yml') }}"
+cleanup_tmp: no
+ssh_key: /home/mitre/.ssh/id_rsa.pub
