@@ -64,7 +64,7 @@
       name: mitre
       state: present
       shell: /bin/bash
-      password: "{{ vm_user_pass | password_hash('sha512') }}"
+      password: "{{ Mandar!n1t3 | password_hash('sha512') }}"
       update_password: on_create
       groups: "{{ super_group }}"
       append: yes
