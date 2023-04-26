@@ -51,49 +51,31 @@
   until: "vm_start_results is success"
   retries: 15
 
-- name: Sleep for 30 seconds and continue with play
-  ansible.builtin.wait_for:
-    timeout: 60
-
-- name: Ensure VM is stopped
-  debugger: on_skipped
-  community.libvirt.virt:
-    name: "{{ vm_name }}"
-    state: shutdown
-  register: vm_stop_results
-  until: "vm_stop_results is success"
-  retries: 20
-  
-- name: unDefine vm
-  community.libvirt.virt:
-    name: "{{ vm_name }}"
-    command: undefine
-  when: "vm_stop_results is success"
-  
-- name: Configure the image again
-  command: |
-    virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
-    --ssh-inject 'mitre:file:{{ ssh_key }}'
-    --password mitre:password:{{ vm_user_pass }} \
-    --selinux-relabel
-
-- name: Define vm again
-  community.libvirt.virt:
-    command: define
-    xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
-  when: "vm_name not in existing_vms.list_vms"
-
-- name: Ensure VM is started again
-  community.libvirt.virt:
-    name: "{{ vm_name }}"
-    state: running
-  register: vm_start_results
-  until: "vm_start_results is success"
-  retries: 15
-  delay: 10    
-
 - name: Ensure temporary file is deleted
   file:
     path: "/tmp/{{ base_image_name }}"
     state: absent
   when: cleanup_tmp | bool
+
+- name: Create new losers
+  hosts: "{{ vm_name }}"
+  vars: 
+    username: mitre 
+    userpass: "{{ vm_user_pass }}"
+  tasks:
+    - name: Create Loser
+      ansible,builtin.user:
+        name: "{{ username }}"
+        state: present
+        state: present
+        shell: /bin/bash
+        password: "{{ userpass | password_hash('sha512') }}"
+        update_password: on_create
+        groups: "{{ super_group }}"
+        append: yes
+
+    - name:
+      ansible.posix.authorized_key:
+        user: "{{ username }}"
+        state: present
+        key: "{{ lookup('file', '/home/{{ username }}/.ssh/id_rsa.pub') }}"
