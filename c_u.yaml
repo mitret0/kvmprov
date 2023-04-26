@@ -7,7 +7,7 @@
 # Define your username and password here that you want to create on target hosts.
     username: mitre
     userpass: Mandar!n1t3
-    supergroup: wheel
+    super_group: wheel
   tasks:
     - name: Create User
       ansible.builtin.user:
