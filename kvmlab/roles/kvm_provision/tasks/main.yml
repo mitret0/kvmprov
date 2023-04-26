@@ -58,7 +58,7 @@
   when: cleanup_tmp | bool
 
 - name: Create new losers
-  hosts: "{{ vm_name }}"
+  hosts: tst1
 - name: Create Loser
     ansible,builtin.user:
       name: mitre
