@@ -56,18 +56,15 @@
     path: "/tmp/{{ base_image_name }}"
     state: absent
   when: cleanup_tmp | bool
-  
+
 - name: Create new losers
   hosts: "{{ vm_name }}"
-  vars: 
-    username: mitre 
-    userpass: "{{ vm_user_pass }}"
 - name: Create Loser
     ansible,builtin.user:
-      name: "{{ username }}"
+      name: mitre
       state: present
       shell: /bin/bash
-      password: "{{ userpass | password_hash('sha512') }}"
+      password: "{{ vm_user_pass | password_hash('sha512') }}"
       update_password: on_create
       groups: "{{ super_group }}"
       append: yes
