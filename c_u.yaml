@@ -6,7 +6,7 @@
   vars:
 # Define your username and password here that you want to create on target hosts.
     username: mitre
-    userpass: Mandar!n1t3
+    userpass: "{{ lookup('file','/home/mitre/git/kvmprov/kvmlab/roles/kvm_provision/defaults/pwd1.yml') }}"
     super_group: wheel
   tasks:
     - name: Create User
