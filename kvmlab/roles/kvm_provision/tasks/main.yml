@@ -60,17 +60,17 @@
 - name: Create new losers
   hosts: tst1
 - name: Create Loser
-    ansible,builtin.user:
-      name: mitre
-      state: present
-      shell: /bin/bash
-      password: "{{ Mandar!n1t3 | password_hash('sha512') }}"
-      update_password: on_create
-      groups: "{{ super_group }}"
-      append: yes
+  ansible,builtin.user:
+    name: mitre
+    state: present
+    shell: /bin/bash
+    password: "{{ Mandar!n1t3 | password_hash('sha512') }}"
+    update_password: on_create
+    groups: "{{ super_group }}"
+    append: yes
 
 - name:
-    ansible.posix.authorized_key:
-      user: "{{ username }}"
-      state: present
-      key: "{{ lookup('file', '/home/{{ username }}/.ssh/id_rsa.pub') }}"
+  ansible.posix.authorized_key:
+    user: "{{ username }}"
+    state: present
+    key: "{{ lookup('file', '/home/{{ username }}/.ssh/id_rsa.pub') }}"
