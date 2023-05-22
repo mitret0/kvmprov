@@ -1,10 +1,10 @@
 ---
 - name: Deploys VM based on golden image
-  hosts: 192.168.1.100 
+  hosts: localhost
   gather_facts: yes
   become: yes
   vars:
-    pool_dir: "/home/mitre/stor"
+    pool_dir: "/var/lib/libvirt/images/pool"
     vcpus: 2
     ram_mb: 2048
     cleanup: yes
@@ -14,7 +14,11 @@
   tasks:
     - name: KVM Provision role
       loop:
-        - tst1      
+        - tst1
+        - tst2
+        - tst3
+        - tst4
+        - tst5      
       include_role:
         name: kvm_provision
       vars:

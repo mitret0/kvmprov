@@ -17,13 +17,7 @@
     <apic/>
     <vmport state="off"/>
   </features>
-  <cpu mode="custom" match="exact" check="partial">
-    <model fallback="allow">Skylake-Client-noTSX-IBRS</model>
-    <feature policy="require" name="ibpb"/>
-    <feature policy="require" name="md-clear"/>
-    <feature policy="require" name="spec-ctrl"/>
-    <feature policy="require" name="ssbd"/>
-  </cpu>
+  <cpu mode="host-passthrough" check="none" migratable="on"/>
   <clock offset="utc">
     <timer name="rtc" tickpolicy="catchup"/>
     <timer name="pit" tickpolicy="delay"/>
