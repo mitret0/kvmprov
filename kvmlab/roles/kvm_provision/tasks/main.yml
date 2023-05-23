@@ -1,6 +1,4 @@
 ---
-- collections:
-    - community.libvirt.virt
 # tasks file for kvm_provision
 - name: Ensure requirements in place
   package:
