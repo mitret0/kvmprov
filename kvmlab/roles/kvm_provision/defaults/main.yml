@@ -1,4 +1,7 @@
 ---
+- hosts: all
+  collections:
+    - community.libvirt.virt
 # defaults file for kvm_provision#
 base_image_name: 
 base_image_url: /home/mitre/img/{{ base_image_name }}
