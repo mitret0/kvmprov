@@ -1,11 +1,11 @@
 ---
 # tasks file for kvm_provision
-- name: Ensure requirements in place
-  package:
-    name:
-      - guestfs-tools
-      - python3-libvirt
-    state: present
+#- name: Ensure requirements in place
+#  package:
+#    name:
+#      - guestfs-tools
+#      - python3-libvirt
+#    state: present
   
 
 - name: Get VMs list
