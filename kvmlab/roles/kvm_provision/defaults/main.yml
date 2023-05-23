@@ -3,7 +3,7 @@
 base_image_name: 
 base_image_url: /home/mitre/img/{{ base_image_name }}
 #base_image_sha: cd339d4ba0f9feb76533566281f967bdad7a4ad7f40b2c951d91565aa05198d657af97c9645899e21c67cd7e43fa85668b6729b06e99091bcc8d6a6a063c6c51
-libvirt_pool_dir: "/home/mitre/stor"
+libvirt_pool_dir: "/var/lib/libvirt/images/pool"
 vm_name: 
 vm_vcpus: 2
 vm_ram_mb: 2048
@@ -12,4 +12,5 @@ vm_root_pass: "{{ lookup('file','pwd.yml') }}"
 vm_user: mitre
 vm_user_pass: "{{ lookup('file','pwd1.yml') }}"
 cleanup_tmp: no
+root_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDmm09oMQBZ91ujwLFpeeZJ7QsRrQ80rQyJolvU/EZLjuFo+BnqfbG1iTFRbNWIYAoFP+d3kmM0zNhpcHKyZDQpeZL8ThYoNCbjvwePsEBXNJKLzoXYySoinuVyLPOPksP+ZNooMg7g+dW/lbMpiHVyMXMuwGDhpWKwzRmsx6X/0g6esr7Ji39LLnzxz3/IqNkEL45VgAPNuVK/nu6crK9Si/xI01l4Ihm5DrshyJtdfcMAGodpJRhwFWGBOxlRXDoGVQRsR9lhXU0N4bdZam3RjPxga5ACGg4wuu6omAm4Hy+GMTc2vBhd1L+cGYkAXoJIXHiYMlsDZdWosHgLXiMgtx7WbIqWmMuOf0DyTN0hvxBM82vp6rvLmijg5qB16De4fDrl2njrcJHCTzrjQW8GZXpTGo0qDwbep/Y2B09jKQD8VDIbZU3FIZ7dflWUzg8GPlMDD6c883dDTil0V7pQBSiSEEUKOafOmUGU9MXh9J4QbqYG4Fufo/njKtTYgps= root@CML-5538
 ssh_key: /home/mitre/.ssh/id_rsa.pub

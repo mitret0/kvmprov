@@ -35,7 +35,9 @@
     --hostname {{ vm_name }}.virtu.lan \
     --firstboot-command 'useradd -m mitre' \
     --root-password password:{{ vm_root_pass }} \
-    --uninstall cloud-init --selinux-relabel
+    --uninstall cloud-init --selinux-relabel \
+    --append-line '/etc/ssh/sshd_config:PermitRootLogin yes' \
+    --ssh-inject root:string:'{{ root_key}}'
 
 - name: Define vm
   community.libvirt.virt:
