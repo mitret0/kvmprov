@@ -1,6 +1,5 @@
 ---
-- hosts: all
-  collections:
+- collections:
     - community.libvirt.virt
 - name: Deploys VM based on golden image
   hosts: localhost
